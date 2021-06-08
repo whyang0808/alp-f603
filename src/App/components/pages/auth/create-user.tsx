@@ -38,7 +38,14 @@ const CreateUser: React.FC = (props) => {
 
     if (value.length === 12 && idType === 'ic') {
       const birthdate = value.slice(0, 6)
-      const year = '19'
+      let year = '19'
+      const birthYear = parseFloat(year + value.slice(0, 2))
+      const currentYear = new Date().getFullYear()
+
+      if ((currentYear - birthYear) > 99) {
+        year = '20'
+      }
+
       const concatenatedBirthDate = year.concat('', birthdate)
 
       form.setFieldsValue({
