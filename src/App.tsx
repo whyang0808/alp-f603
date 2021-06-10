@@ -1,17 +1,34 @@
 import React from 'react'
-import logo from './logo.svg'
 import './App.css'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+
+import Signup from './App/components/pages/auth/signup'
+import Login from './App/components/pages/auth/login'
+import DashBoardPage from './App/pages/dashboard'
+import SettingPage from './App/pages/setting'
 
 const App: React.FC = () => {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload!
-        </p>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route path='/signup'>
+          <Signup />
+        </Route>
+
+        <Route path='/login'>
+          <Login />
+        </Route>
+
+        <Route path='/setting'>
+          <SettingPage text='Setting' />
+        </Route>
+
+        <Route path='/'>
+          <DashBoardPage text='Dashboard' />
+        </Route>
+
+      </Switch>
+    </BrowserRouter>
   )
 }
 
