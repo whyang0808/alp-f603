@@ -3,6 +3,7 @@ import moment from 'moment'
 import { Form, DatePicker, Input, Button, Radio } from 'antd'
 import { debounce, omit } from 'lodash'
 
+import responseHandler from '../../../utils/respHandler'
 import { SubmitValues } from './interfaces'
 
 const layout = {
@@ -21,7 +22,7 @@ const tailLayout = {
   }
 }
 
-const CreateUser: React.FC = (props) => {
+const Signup: React.FC = (props) => {
   const [form] = Form.useForm()
 
   const handleSubmit = (values: SubmitValues) => {
@@ -32,6 +33,7 @@ const CreateUser: React.FC = (props) => {
     }
     console.log('Success:', updatedValues)
     // HTTP Request to create user account & check for duplication & wait for admin approval
+    // responseHandler('Thank You! Please wait for approval', 'success')
   }
 
   const handleValuesChange = debounce((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -174,4 +176,4 @@ const CreateUser: React.FC = (props) => {
   )
 }
 
-export default CreateUser
+export default Signup
