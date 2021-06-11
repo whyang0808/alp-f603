@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 import Signup from './App/components/pages/auth/signup'
 import Login from './App/components/pages/auth/login'
+import Forgot from './App/components/pages/auth/forgot'
 import DashBoardPage from './App/pages/dashboard'
 import SettingPage from './App/pages/setting'
 
@@ -17,6 +18,10 @@ const App: React.FC = () => {
 
         <Route path='/login'>
           <Login />
+        </Route>
+
+        <Route path='/forgot'>
+          <Forgot />
         </Route>
 
         <Route path='/setting'>

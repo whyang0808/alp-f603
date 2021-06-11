@@ -29,11 +29,16 @@ const Login: React.FC = (props) => {
       <Form
         form={form}
         style={{ width: '100%' }}
-        name='login-form'
+        name='forgot-password-form'
         onFinish={handleSubmit}
       >
         <Form.Item {...layout}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>LOG IN</div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            FORGOT PASSWORD?
+          </div>
+          {/* <div style={{ paddingTop: '3%' }}>
+            We'll send the recovery link to
+          </div> */}
         </Form.Item>
 
         <Form.Item
@@ -53,39 +58,16 @@ const Login: React.FC = (props) => {
           <Input placeholder='E-mail' />
         </Form.Item>
 
-        <Form.Item
-          name='password'
-          {...layout}
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!'
-            }
-          ]}
-        >
-          <Input.Password placeholder='Password' />
-        </Form.Item>
-
         <Form.Item {...layout}>
           <Button type='primary' htmlType='submit' style={{ width: '100%' }}>
-            Submit
+            Send Recovery Link
           </Button>
-
-          <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '2%' }}>
-            <Link to='/forgot'>Forgot Password</Link>
-            <div style={{ margin: '0 2%' }}>|</div>
-            <Link to='/signup'>Sign up for an account</Link>
-          </div>
         </Form.Item>
 
         <Form.Item {...layout}>
           <hr style={{ color: 'grey' }} />
           <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: '2%' }}>
-            <Link to='/'>Privacy Policy</Link>
-            <div>|</div>
-            <Link to='/signup'>Terms of Conditions</Link>
-            <div>|</div>
-            <div>Alp-f603 ©2021</div>
+            <Link to='/login'>Return to login</Link>
           </div>
         </Form.Item>
 
