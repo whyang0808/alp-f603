@@ -6,12 +6,12 @@ const USER_DATA = 'userData'
 let logoutTimer: number
 
 export const useAuth = () => {
-  const [token, setToken] = useState<null | string>(null)
+  const [token, setToken] = useState<string>('')
   const [tokenExpirationDate, setTokenExpirationDate] = useState<null | Date>(null)
-  const [userId, setUserId] = useState<null | string>(null)
+  const [userId, setUserId] = useState<string>('')
   const [userRole, setUserRole] = useState<ROLE>(ROLE.UNKNOWN)
 
-  const login = useCallback<(uid: string, role: ROLE, token: string, expirationDate: Date) => void>((uid, role, token, expirationDate) => {
+  const login = useCallback<(uid: string, role: ROLE, token: string, expirationDate?: Date) => void>((uid, role, token, expirationDate) => {
     const tokenExpirationDate = expirationDate || new Date(new Date().getTime() + 3600000) // Set 1 hour expiration if expiration date is not given
     setUserId(uid)
     setUserRole(role)
@@ -22,9 +22,9 @@ export const useAuth = () => {
   }, [])
 
   const logout = useCallback(() => {
-    setUserId(null)
+    setUserId('')
     setUserRole(ROLE.UNKNOWN)
-    setToken(null)
+    setToken('')
     setTokenExpirationDate(null)
 
     localStorage.removeItem(USER_DATA)
