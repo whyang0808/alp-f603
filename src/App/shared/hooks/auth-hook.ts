@@ -1,31 +1,59 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useReducer } from 'react'
 
 import { ROLE } from '../constants'
+import { IAuthState } from '../context/auth-context'
 
 const USER_DATA = 'userData'
 let logoutTimer: number
 
+const authInitialState: IAuthState = {
+  token: undefined,
+  tokenExpirationDate: undefined,
+  userId: undefined,
+  userRole: ROLE.UNKNOWN
+}
+
+const authReducer = (state: IAuthState, action: any) => {
+  switch (action.type) {
+    case 'login':
+      return {
+        token: action.payload.token,
+        tokenExpirationDate: action.payload.tokenExpirationDate,
+        userId: action.payload.userId,
+        userRole: action.payload.userRole
+      }
+    case 'logout':
+      return {
+        ...state,
+        ...authInitialState
+      }
+    default: return authInitialState
+  }
+}
+
 export const useAuth = () => {
-  const [token, setToken] = useState<string>('')
-  const [tokenExpirationDate, setTokenExpirationDate] = useState<null | Date>(null)
-  const [userId, setUserId] = useState<string>('')
-  const [userRole, setUserRole] = useState<ROLE>(ROLE.UNKNOWN)
+  const [state, dispatch] = useReducer(authReducer, authInitialState)
 
   const login = useCallback<(uid: string, role: ROLE, token: string, expirationDate?: Date) => void>((uid, role, token, expirationDate) => {
     const tokenExpirationDate = expirationDate || new Date(new Date().getTime() + 3600000) // Set 1 hour expiration if expiration date is not given
-    setUserId(uid)
-    setUserRole(role)
-    setToken(token)
-    setTokenExpirationDate(tokenExpirationDate)
 
-    localStorage.setItem(USER_DATA, JSON.stringify({ uid, role, token, expiration: tokenExpirationDate.toISOString() }))
+    dispatch({
+      type: 'login',
+      payload: {
+        token: token,
+        tokenExpirationDate: tokenExpirationDate,
+        userId: uid,
+        userRole: role
+      }
+    })
+
+    // localStorage.setItem(USER_DATA, JSON.stringify({ uid, role, token, expiration: tokenExpirationDate.toISOString() }))
   }, [])
 
   const logout = useCallback(() => {
-    setUserId('')
-    setUserRole(ROLE.UNKNOWN)
-    setToken('')
-    setTokenExpirationDate(null)
+    dispatch({
+      type: 'logout'
+    })
 
     localStorage.removeItem(USER_DATA)
   }, [])
@@ -41,13 +69,19 @@ export const useAuth = () => {
     }
   }, [login])
 
-  useEffect(() => {
-    if (token && tokenExpirationDate) {
-      logoutTimer = window.setTimeout(logout, tokenExpirationDate.getTime() - new Date().getTime())
-    } else {
-      clearTimeout(logoutTimer)
-    }
-  }, [logout, token, tokenExpirationDate])
+  // useEffect(() => {
+  //   if (state.token && state.tokenExpirationDate) {
+  //     logoutTimer = window.setTimeout(logout, state.tokenExpirationDate.getTime() - new Date().getTime())
+  //   } else {
+  //     clearTimeout(logoutTimer)
+  //   }
+  // }, [logout, state.token, state.tokenExpirationDate])
 
-  return { login, logout, token, userId, userRole }
+  return {
+    login,
+    logout,
+    token: state.token,
+    userId: state.userId,
+    userRole: state.userRole
+  }
 }

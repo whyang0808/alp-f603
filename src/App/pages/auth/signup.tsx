@@ -3,7 +3,7 @@ import moment from 'moment'
 import { Form, DatePicker, Input, Button, Radio } from 'antd'
 import { debounce, omit } from 'lodash'
 
-import responseHandler from '../../../utils/respHandler'
+import responseHandler from '../../utils/respHandler'
 import { SubmitValues } from './interfaces'
 
 const layout = {

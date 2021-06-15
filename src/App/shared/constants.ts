@@ -1,7 +1,7 @@
 export enum ROLE {
-  SUPERADMIN = 'superadmin',
-  ADMIN = 'admin',
-  AGENT = 'agent',
-  DEVELOPER = 'developer',
-  UNKNOWN = 'unknown'
+  SUPERADMIN = 'SUPERADMIN',
+  ADMIN = 'ADMIN',
+  AGENT = 'AGENT',
+  DEVELOPER = 'DEVELOPER',
+  UNKNOWN = 'UNKNOWN'
 }

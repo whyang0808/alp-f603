@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Form, Input, Button } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 
 // import responseHandler from '../../../utils/respHandler'
 import { SubmitValues } from './interfaces'
+import { AuthContext } from '../../shared/context/auth-context'
+import { ROLE } from '../../shared/constants'
+
+import axios from '../../shared/axios/axios'
 
 const layout = {
   wrapperCol: {
@@ -15,13 +19,35 @@ const layout = {
   }
 }
 
+interface LocationState {
+  from?: {
+    pathname?: string;
+  };
+}
+
 const Login: React.FC = (props) => {
   const [form] = Form.useForm()
+  const history = useHistory()
+  const location = useLocation<LocationState>()
+  const { login } = useContext(AuthContext)
 
-  const handleSubmit = (values: SubmitValues) => {
+  const handleSubmit = async (values: SubmitValues) => {
     console.log('Success:', values)
-    // HTTP Request to create user account & check for duplication & wait for admin approval
-    // responseHandler('Thank You! Please wait for approval', 'success')
+
+    const result = await axios({
+      method: 'post',
+      url: '/user/login',
+      data: values
+    })
+    const { token } = result.data
+    login('60c6fb6c103c162d55b357ff', ROLE.ADMIN, token)
+
+    let pathname = '/'
+    if (location.state?.from?.pathname) {
+      pathname = location.state?.from?.pathname
+    }
+
+    return history.push(pathname)
   }
 
   return (
