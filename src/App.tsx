@@ -6,17 +6,18 @@ import { useAuth } from './App/shared/hooks/auth-hook'
 import AppRouter from './App/routes'
 
 const App: React.FC = () => {
-  const { login, logout, token, userId, userRole } = useAuth()
+  const { login, logout, token, userId, userRole, resetToken } = useAuth()
 
   return (
     <AuthContext.Provider
       value={{
         isLoggedIn: !!token,
-        login,
-        logout,
         role: userRole,
         token,
-        userId
+        userId,
+        login,
+        logout,
+        resetToken
       }}
     >
       <AppRouter />

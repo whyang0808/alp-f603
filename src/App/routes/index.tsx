@@ -8,6 +8,9 @@ import ForgotPage from '../pages/auth/forgot'
 import SettingPage from '../pages/setting'
 import DashBoardPage from '../pages/dashboard'
 
+import withAxios from '../shared/axios/withAxios'
+import AxiosInstance from '../shared/axios/axios'
+
 const AppRouter = () => (
   <BrowserRouter>
     <Switch>
@@ -35,4 +38,4 @@ const AppRouter = () => (
   </BrowserRouter>
 )
 
-export default AppRouter
+export default withAxios(AppRouter, AxiosInstance)

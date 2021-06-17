@@ -40,7 +40,7 @@ const Login: React.FC = (props) => {
       data: values
     })
     const { token } = result.data
-    login('60c6fb6c103c162d55b357ff', ROLE.ADMIN, token)
+    login('60c6fb6c103c162d55b357ff', ROLE.ADMIN, `Bearer ${token}`)
 
     let pathname = '/'
     if (location.state?.from?.pathname) {

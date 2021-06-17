@@ -17,6 +17,8 @@ type AuthContextType = {
     role: ROLE,
     token: string,
     expirationDate?: Date) => void;
+  resetToken: (token: string,
+    expirationDate?: Date) => void;
   logout: () => void;
 }
 
@@ -26,5 +28,6 @@ export const AuthContext = createContext<AuthContextType>({
   token: undefined,
   role: ROLE.UNKNOWN,
   login: () => {},
+  resetToken: () => {},
   logout: () => {}
 })

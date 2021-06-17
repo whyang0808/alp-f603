@@ -22,6 +22,12 @@ const authReducer = (state: IAuthState, action: any) => {
         userId: action.payload.userId,
         userRole: action.payload.userRole
       }
+    case 'resetToken':
+      return {
+        ...state,
+        token: action.payload.token,
+        tokenExpirationDate: action.payload.tokenExpirationDate
+      }
     case 'logout':
       return {
         ...state,
@@ -58,16 +64,29 @@ export const useAuth = () => {
     localStorage.removeItem(USER_DATA)
   }, [])
 
-  useEffect(() => {
-    const storedUserData = localStorage.getItem(USER_DATA)
+  const resetToken = useCallback<(token: string, expirationDate?: Date) => void>((token, expirationDate) => {
+    // Set 1 hour expiration if expiration date is not given
+    const tokenExpirationDate = expirationDate || new Date(new Date().getTime() + 3600000)
 
-    if (storedUserData) {
-      const { uid, role, token, expiration } = JSON.parse(storedUserData)
-      if (new Date(expiration) > new Date()) {
-        login(uid, role, token, expiration)
+    dispatch({
+      type: 'resetToken',
+      payload: {
+        token: token,
+        tokenExpirationDate: tokenExpirationDate
       }
-    }
-  }, [login])
+    })
+  }, [])
+
+  // useEffect(() => {
+  //   const storedUserData = localStorage.getItem(USER_DATA)
+
+  //   if (storedUserData) {
+  //     const { uid, role, token, expiration } = JSON.parse(storedUserData)
+  //     if (new Date(expiration) > new Date()) {
+  //       login(uid, role, token, expiration)
+  //     }
+  //   }
+  // }, [login])
 
   // useEffect(() => {
   //   if (state.token && state.tokenExpirationDate) {
@@ -76,10 +95,10 @@ export const useAuth = () => {
   //     clearTimeout(logoutTimer)
   //   }
   // }, [logout, state.token, state.tokenExpirationDate])
-
   return {
     login,
     logout,
+    resetToken,
     token: state.token,
     userId: state.userId,
     userRole: state.userRole
