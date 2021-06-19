@@ -1,8 +1,9 @@
 import React from 'react'
 import moment from 'moment'
 import { Form, DatePicker, Input, Button, Radio } from 'antd'
-import { debounce, omit } from 'lodash'
+import { debounce } from 'lodash'
 
+import axios from '../../shared/axios/axios'
 import responseHandler from '../../utils/respHandler'
 import { SubmitValues } from './interfaces'
 
@@ -25,15 +26,20 @@ const tailLayout = {
 const Signup: React.FC = (props) => {
   const [form] = Form.useForm()
 
-  const handleSubmit = (values: SubmitValues) => {
-    const updatedValues = {
-      ...omit(values, ['firstName', 'lastName']),
-      name: { firstName: values.firstName, lastName: values.lastName }
-
+  const handleSubmit = async (values: SubmitValues) => {
+    try {
+      const result = await axios.post('/user/create', { ...values })
+      // TODO: Determine what to do next after an account created.
+    } catch (err) {
+      const responseMessage = err.response?.data?.message
+      if (responseMessage === 'USER_EXISTS') {
+        responseHandler('User exists already, please login instead', 'warning')
+      } else if (responseMessage === 'Internal server error') {
+        responseHandler(new Error(responseMessage), 'error')
+      } else {
+        responseHandler(new Error('An error occurred. Please try again.'), 'error')
+      }
     }
-    console.log('Success:', updatedValues)
-    // HTTP Request to create user account & check for duplication & wait for admin approval
-    // responseHandler('Thank You! Please wait for approval', 'success')
   }
 
   const handleValuesChange = debounce((event: React.ChangeEvent<HTMLInputElement>) => {
