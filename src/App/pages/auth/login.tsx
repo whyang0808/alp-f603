@@ -48,7 +48,7 @@ const Login: React.FC = (props) => {
     } catch (err) {
       const responseMessage = err.response?.data?.message
       if (responseMessage === 'EMAIL_OR_PASSWORD_WRONG') {
-        responseHandler(new Error('Incorrect username or password'), 'error')
+        responseHandler(new Error('Incorrect email or password'), 'error')
       } else if (responseMessage === 'Internal server error') {
         responseHandler(new Error(responseMessage), 'error')
       } else {
