@@ -209,9 +209,8 @@ const Signup: React.FC = (props) => {
             Submit
           </Button>
 
-          <div style={{ display: 'flex', paddingTop: '2%' }}>
-            <div style={{ marginRight: '1%' }}>Already have an account?</div>
-            <Link to='/login'>Back to log in</Link>
+          <div style={{ paddingTop: '2%' }}>
+            Already have an account? <Link to='/login'>Return to login</Link>
           </div>
         </Form.Item>
 
