@@ -29,8 +29,12 @@ const Signup: React.FC = (props) => {
   const history = useHistory()
 
   const handleSubmit = async (values: SubmitValues) => {
+    const modifiedValues = {
+      ...values,
+      birthDate: values.birthDate!.format('YYYY-MM-DD')
+    }
     try {
-      const { status } = await axios.post('/user/create', { ...values })
+      const { status } = await axios.post('/user/create', { ...modifiedValues })
       if (status === 200) {
         message.destroy()
         history.push('/login')
