@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import moment from 'moment'
 import { Form, DatePicker, Input, Button, Radio, message } from 'antd'
 import { debounce } from 'lodash'
@@ -182,6 +182,11 @@ const Signup: React.FC = (props) => {
           <Button type='primary' htmlType='submit'>
             Submit
           </Button>
+
+          <div style={{ display: 'flex', paddingTop: '2%' }}>
+            <div style={{ marginRight: '1%' }}>Already have an account?</div>
+            <Link to='/login'>Back to log in</Link>
+          </div>
         </Form.Item>
 
       </Form>
