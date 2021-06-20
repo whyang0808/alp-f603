@@ -32,7 +32,7 @@ const Login: React.FC = (props) => {
 
   const handleSubmit = async (values: SubmitValues) => {
     try {
-      const { data: { token } = {} } = await axios.post('/user/login', { ...values })
+      const { data: { token } = {} } = await axios.post('/user/login', values)
       if (token) {
         login('60c6fb6c103c162d55b357ff', ROLE.UNKNOWN, token)
 
