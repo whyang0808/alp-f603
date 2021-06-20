@@ -25,7 +25,6 @@ interface LocationState {
 }
 
 const Login: React.FC = (props) => {
-  message.destroy()
   const [form] = Form.useForm()
   const history = useHistory()
   const location = useLocation<LocationState>()
@@ -33,18 +32,19 @@ const Login: React.FC = (props) => {
 
   const handleSubmit = async (values: SubmitValues) => {
     try {
-      const result = await axios.post('/user/login', { ...values })
-      if (result.data.token) {
-        login('60c6fb6c103c162d55b357ff', ROLE.UNKNOWN, result.data.token)
+      const { data: { token } = {} } = await axios.post('/user/login', { ...values })
+      if (token) {
+        login('60c6fb6c103c162d55b357ff', ROLE.UNKNOWN, token)
 
         let pathname = '/'
         if (location.state?.from?.pathname) {
           pathname = location.state?.from?.pathname
         }
 
+        message.destroy()
         return history.push(pathname)
       }
-      throw new Error('No token found in the response')
+      throw new Error()
     } catch (err) {
       const responseMessage = err.response?.data?.message
       if (responseMessage === 'EMAIL_OR_PASSWORD_WRONG') {
@@ -52,7 +52,7 @@ const Login: React.FC = (props) => {
       } else if (responseMessage === 'Internal server error') {
         responseHandler(new Error(responseMessage), 'error')
       } else {
-        responseHandler(new Error('An error occurred. Please try again.'), 'error')
+        responseHandler(err, 'error')
       }
     }
   }
