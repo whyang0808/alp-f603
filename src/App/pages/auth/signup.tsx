@@ -1,6 +1,7 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import moment from 'moment'
-import { Form, DatePicker, Input, Button, Radio } from 'antd'
+import { Form, DatePicker, Input, Button, Radio, message } from 'antd'
 import { debounce } from 'lodash'
 
 import axios from '../../shared/axios/axios'
@@ -25,11 +26,17 @@ const tailLayout = {
 
 const Signup: React.FC = (props) => {
   const [form] = Form.useForm()
+  const history = useHistory()
 
   const handleSubmit = async (values: SubmitValues) => {
     try {
-      const result = await axios.post('/user/create', { ...values })
-      // TODO: Determine what to do next after an account created.
+      const { status } = await axios.post('/user/create', { ...values })
+      if (status === 200) {
+        message.destroy()
+        history.push('/login')
+        return responseHandler('Your account has been created, please login', 'success')
+      }
+      throw new Error()
     } catch (err) {
       const responseMessage = err.response?.data?.message
       if (responseMessage === 'USER_EXISTS') {
@@ -37,7 +44,7 @@ const Signup: React.FC = (props) => {
       } else if (responseMessage === 'Internal server error') {
         responseHandler(new Error(responseMessage), 'error')
       } else {
-        responseHandler(new Error('An error occurred. Please try again.'), 'error')
+        responseHandler(err, 'error')
       }
     }
   }
