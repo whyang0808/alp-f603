@@ -1,13 +1,12 @@
 import React, { useContext } from 'react'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, message } from 'antd'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 
-// import responseHandler from '../../../utils/respHandler'
-import { SubmitValues } from './interfaces'
-import { AuthContext } from '../../shared/context/auth-context'
-import { ROLE } from '../../shared/constants'
-
 import axios from '../../shared/axios/axios'
+import { ROLE } from '../../shared/constants'
+import { AuthContext } from '../../shared/context/auth-context'
+import responseHandler from '../../utils/respHandler'
+import { SubmitValues } from './interfaces'
 
 const layout = {
   wrapperCol: {
@@ -32,22 +31,30 @@ const Login: React.FC = (props) => {
   const { login } = useContext(AuthContext)
 
   const handleSubmit = async (values: SubmitValues) => {
-    console.log('Success:', values)
+    try {
+      const { data: { token } = {} } = await axios.post('/user/login', values)
+      if (token) {
+        login('60c6fb6c103c162d55b357ff', ROLE.UNKNOWN, token)
 
-    const result = await axios({
-      method: 'post',
-      url: '/user/login',
-      data: values
-    })
-    const { token } = result.data
-    login('60c6fb6c103c162d55b357ff', ROLE.ADMIN, `Bearer ${token}`)
+        let pathname = '/'
+        if (location.state?.from?.pathname) {
+          pathname = location.state?.from?.pathname
+        }
 
-    let pathname = '/'
-    if (location.state?.from?.pathname) {
-      pathname = location.state?.from?.pathname
+        message.destroy()
+        return history.push(pathname)
+      }
+      throw new Error()
+    } catch (err) {
+      const responseMessage = err.response?.data?.message
+      if (responseMessage === 'EMAIL_OR_PASSWORD_WRONG') {
+        responseHandler(new Error('Incorrect email or password'), 'error')
+      } else if (responseMessage === 'Internal server error') {
+        responseHandler(new Error(responseMessage), 'error')
+      } else {
+        responseHandler(err, 'error')
+      }
     }
-
-    return history.push(pathname)
   }
 
   return (

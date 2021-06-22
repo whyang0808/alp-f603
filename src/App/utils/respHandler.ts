@@ -9,7 +9,7 @@ type Type =
 export const handleFatal = (error: Error) => {
   return {
     success: false,
-    message: error.message.toString() || 'Whoops. An error occured. Pleasse try again.'
+    message: error.message?.toString() || 'Whoops. An error occured. Pleasse try again.'
   }
 }
 
