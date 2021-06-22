@@ -39,8 +39,9 @@ const Login: React.FC = (props) => {
       url: '/user/login',
       data: values
     })
-    const { token } = result.data
-    login('60c6fb6c103c162d55b357ff', ROLE.ADMIN, `Bearer ${token}`)
+
+    const { userId, token } = result.data
+    login(userId, 'UNKNOWN' as ROLE, token)
 
     let pathname = '/'
     if (location.state?.from?.pathname) {

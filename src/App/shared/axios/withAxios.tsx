@@ -20,7 +20,7 @@ const withAxiosHandler = (WrappedComponent: React.FC, axios: AxiosInstance) => (
       res => {
         // console.log('Axios res.status', res)
         if (res.status === 200 && res.config.url === '/auth/refresh') {
-          resetToken(`Bearer ${res.data.token}`)
+          resetToken(res.data.token)
         }
         return res
       },
@@ -35,7 +35,6 @@ const withAxiosHandler = (WrappedComponent: React.FC, axios: AxiosInstance) => (
     )
 
     return () => {
-      console.log('Axios cleaning up', reqInterceptor, resInterceptor)
       axios.interceptors.request.eject(reqInterceptor)
       axios.interceptors.response.eject(resInterceptor)
     }
