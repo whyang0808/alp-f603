@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from 'react'
 
 import { AuthContext } from '../../shared/context/auth-context'
 import NavBar from '../../components/layouts/NavBar'
+import SideBar from '../../components/layouts/SideBar'
 import axios from '../../shared/axios/axios'
 
 interface SettingProps {
@@ -31,7 +32,8 @@ const Setting: React.FC<SettingProps> = (props) => {
 
   return (
     <NavBar>
-      {props.text || 'Setting Page'}
+      {/* SideBar will dynamically decide on which content component to render */}
+      <SideBar />
     </NavBar>
   )
 }

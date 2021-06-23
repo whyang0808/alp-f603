@@ -15,7 +15,7 @@ const layout = {
   }
 }
 
-const Login: React.FC = (props) => {
+const Forgot: React.FC = (props) => {
   const [form] = Form.useForm()
 
   const handleSubmit = (values: SubmitValues) => {
@@ -76,4 +76,4 @@ const Login: React.FC = (props) => {
   )
 }
 
-export default Login
+export default Forgot

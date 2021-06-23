@@ -58,7 +58,7 @@ const NavBar = React.memo<NavBarProps>((props) => {
           </SubMenu>
         </Menu>
       </Header>
-      <Content style={{ padding: '2% 2%' }}>
+      <Content>
         {props.children}
       </Content>
     </>

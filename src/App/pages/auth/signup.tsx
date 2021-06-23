@@ -10,17 +10,32 @@ import { SubmitValues } from './interfaces'
 
 const layout = {
   labelCol: {
-    span: 4
+    sm: {
+      span: 12
+    },
+    lg: {
+      span: 6
+    }
   },
   wrapperCol: {
-    span: 12
+    sm: {
+      span: 12
+    },
+    lg: {
+      span: 12
+    }
   }
 }
 
 const tailLayout = {
   wrapperCol: {
-    offset: 4,
-    span: 12
+    sm: {
+      span: 12
+    },
+    lg: {
+      offset: 6,
+      span: 12
+    }
   }
 }
 
