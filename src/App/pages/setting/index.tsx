@@ -12,23 +12,23 @@ interface SettingProps {
 const Setting: React.FC<SettingProps> = (props) => {
   const context = useContext(AuthContext)
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const result = await axios({
-          method: 'get',
-          url: '/user/setting',
-          headers: {
-            authorization: context.token
-          }
-        })
-        // const data = result.data
-        // console.log('data', data)
-      } catch (err) {
-        console.log('error setting', err)
-      }
-    })()
-  }, [context.token])
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const result = await axios({
+  //         method: 'get',
+  //         url: '/user/setting',
+  //         headers: {
+  //           authorization: context.token
+  //         }
+  //       })
+  //       // const data = result.data
+  //       // console.log('data', data)
+  //     } catch (err) {
+  //       console.log('error setting', err)
+  //     }
+  //   })()
+  // }, [context.token])
 
   return (
     <NavBar>

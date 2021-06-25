@@ -26,36 +26,33 @@ const SideBar: React.FC = (props) => {
     }, [])
 
   return (
-    <>
-      <Content>
-        <Layout style={{ background: '#fff', minHeight: '90vh' }}>
-          <Sider
-            width={200}
+    <Content>
+      <Layout style={{ background: '#fff', minHeight: '90vh' }}>
+        <Sider
+          width={200}
+        >
+          <Menu
+            mode='inline'
+            defaultSelectedKeys={[selectedKey]}
+            style={{ height: '100%' }}
+            onClick={handleClick}
           >
-            <Menu
-              mode='inline'
-              defaultSelectedKeys={[selectedKey]}
-              style={{ height: '100%' }}
-              onClick={handleClick}
-            >
-              <Menu.Item key='profile' icon={<UserOutlined />}>Profile</Menu.Item>
+            <Menu.Item key='profile' icon={<UserOutlined />}>Profile</Menu.Item>
 
-              <SubMenu key='sub1' icon={<LaptopOutlined />} title='Sub Nav'>
-                <Menu.Item key='1'>Option 1</Menu.Item>
-                <Menu.Item key='2'>Option 2</Menu.Item>
-              </SubMenu>
+            <SubMenu key='sub1' icon={<LaptopOutlined />} title='Sub Nav'>
+              <Menu.Item key='1'>Option 1</Menu.Item>
+              <Menu.Item key='2'>Option 2</Menu.Item>
+            </SubMenu>
 
-              <Menu.Item key='notification' icon={<NotificationOutlined />}>Notification</Menu.Item>
+            <Menu.Item key='notification' icon={<NotificationOutlined />}>Notification</Menu.Item>
 
-            </Menu>
-          </Sider>
-          <Content style={{ padding: '1%' }}>
-            {bodyContent}
-          </Content>
-        </Layout>
-      </Content>
-    </>
-
+          </Menu>
+        </Sider>
+        <Content style={{ padding: '1%' }}>
+          {bodyContent}
+        </Content>
+      </Layout>
+    </Content>
   )
 }
 

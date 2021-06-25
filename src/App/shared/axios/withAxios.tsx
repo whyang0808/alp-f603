@@ -27,7 +27,7 @@ const withAxiosHandler = (WrappedComponent: React.FC, axios: AxiosInstance) => (
       err => {
         if (err.response.status === 401 && err.response.data.message === 'TOKEN_EXPIRED') {
           console.log('Axios req error 401', err.response.data.message)
-          return refetchAuthToken()
+          refetchAuthToken()
         }
         return Promise.reject(err)
       }
@@ -47,7 +47,7 @@ const withAxiosHandler = (WrappedComponent: React.FC, axios: AxiosInstance) => (
     })
   }
 
-  console.log('Axios re-rendering!')
+  // console.log('Axios re-rendering!')
 
   return (
     <WrappedComponent

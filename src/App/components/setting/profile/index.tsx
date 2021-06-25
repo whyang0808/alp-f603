@@ -1,5 +1,10 @@
-import React from 'react'
+import React, { useEffect, useContext, useCallback } from 'react'
 import { Form, Input, Button, DatePicker, Select } from 'antd'
+import moment from 'moment'
+
+import { AuthContext } from '../../../shared/context/auth-context'
+import axios from '../../../shared/axios/axios'
+import responseHandler from '../../../utils/respHandler'
 
 interface IUserProfileProps {
   onChangePassword: React.Dispatch<React.SetStateAction<Boolean>>
@@ -40,13 +45,78 @@ const tailLayout = {
 }
 
 const UserProfile: React.FC<IUserProfileProps> = (props) => {
-  const onFinish = (values: any) => {
-    console.log('Success:', values)
-  }
+  const [form] = Form.useForm()
+  const context = useContext(AuthContext)
+  const { token, userId } = context
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
-  }
+  useEffect(() => {
+    (async () => {
+      try {
+        const result = await axios.get(
+          `/user/get-user-info/${userId}`,
+          {
+            headers: {
+              authorization: token
+            }
+          }
+        )
+
+        if (result.status === 200) {
+          const { firstName, lastName, idType, idNumber, email, birthDate } = result.data
+          form.setFieldsValue({
+            firstName,
+            lastName,
+            idType,
+            idNumber,
+            email,
+            birthDate: moment(birthDate)
+          })
+        }
+      } catch (err) {
+        const responseMessage = err.response?.data?.message
+        if (responseMessage === 'Internal server error') {
+          responseHandler(new Error(responseMessage), 'error')
+        } else {
+          responseHandler(err, 'error')
+        }
+        console.log('err', err)
+      }
+    })()
+  }, [userId, token, form])
+
+  const handleSubmit = useCallback<(values: any) => void>(
+    async (values) => {
+      const modifiedValues = {
+        ...values,
+        birthDate: values.birthDate!.format('YYYY-MM-DD')
+      }
+
+      try {
+        const { status } = await axios.post(
+          '/user/update',
+          modifiedValues,
+          {
+            headers: {
+              authorization: token
+            }
+          }
+        )
+
+        if (status === 200) {
+          return responseHandler('Profile updated succesfully', 'success')
+        }
+        throw new Error()
+      } catch (err) {
+        const responseMessage = err.response?.data?.message
+        if (responseMessage === 'Details are incorrect') {
+          responseHandler('Details are incorrect', 'warning')
+        } else if (responseMessage === 'Internal server error') {
+          responseHandler(new Error(responseMessage), 'error')
+        } else {
+          responseHandler(err, 'error')
+        }
+      }
+    }, [token])
 
   const prefixSelector = (
     <Form.Item name='idType' noStyle>
@@ -64,12 +134,9 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
   return (
     <Form
       {...layout}
-      name='basic'
-      initialValues={{
-        idType: 'ic'
-      }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
+      form={form}
+      name='user-profile'
+      onFinish={handleSubmit}
     >
       <Form.Item
         label='E-mail'
