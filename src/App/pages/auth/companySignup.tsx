@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Form, Input, Button, message } from 'antd'
+import { Form, Input, Button } from 'antd'
 
 import axios from '../../shared/axios/axios'
 import { AuthContext } from '../../shared/context/auth-context'
 import responseHandler from '../../utils/respHandler'
-import { SubmitValues } from './interfaces'
+import { CompanySubmitValues } from './interfaces'
 
 const layout = {
   labelCol: {
@@ -43,19 +43,21 @@ const CompanySignup: React.FC = (props) => {
   const history = useHistory()
   const { userId } = useContext(AuthContext)
 
-  const handleSubmit = async (values: SubmitValues) => {
-    // TODO: Handle response once backend is ready.
+  const handleSubmit = async (values: CompanySubmitValues) => {
     try {
       const { status } = await axios.post('/company/create', { ...values, userId })
       if (status === 200) {
-        message.destroy()
         history.push('/')
         return responseHandler('We\'ve sent request to our admin. You\'ll be notified through your email once the request is approved.', 'success', 5)
       }
       throw new Error()
     } catch (err) {
       const responseMessage = err.response?.data?.message
-      if (responseMessage) {
+      if (responseMessage === 'COMPANY_EXISTS') {
+        // Perhaps the endpoint can return different messages like "Company registration is pending approval"
+        // and "Company account exists" (if the registration has been approved)
+        responseHandler('Company exists already', 'warning')
+      } else if (responseMessage) {
         responseHandler(new Error(responseMessage), 'error')
       } else {
         responseHandler(err, 'error')
@@ -72,7 +74,7 @@ const CompanySignup: React.FC = (props) => {
         onFinish={handleSubmit}
       >
         <Form.Item
-          name='registrationNumber'
+          name='registrationId'
           label='Registration No.'
           rules={[
             {
@@ -85,7 +87,7 @@ const CompanySignup: React.FC = (props) => {
         </Form.Item>
 
         <Form.Item
-          name='companyName'
+          name='name'
           label='Company Name'
           rules={[
             {
