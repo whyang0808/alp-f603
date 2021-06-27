@@ -50,10 +50,10 @@ const ResetPassword = () => {
       throw new Error()
     } catch (err) {
       const responseMessage = err.response?.data?.message
-      if (responseMessage === 'Internal server error') {
-        responseHandler(new Error(responseMessage), 'error')
-      } else if (responseMessage === 'Details are incorrect' || responseMessage === 'Unauthorized') {
+      if (responseMessage === 'Details are incorrect' || responseMessage === 'Unauthorized') {
         responseHandler(new Error('Password reset failed, please request another reset link'), 'error')
+      } else if (responseMessage) {
+        responseHandler(new Error(responseMessage), 'error')
       } else {
         responseHandler(err, 'error')
       }
