@@ -8,4 +8,5 @@ export interface SubmitValues {
     password?: string;
     companyName?: string;
     registrationNumber?: string;
+    newPassword?: string;
 }
