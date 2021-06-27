@@ -40,7 +40,6 @@ const Login: React.FC = (props) => {
         if (location.state?.from?.pathname) {
           pathname = location.state?.from?.pathname
         }
-        // why needed message.destroy()?
         message.destroy()
         return history.push(pathname)
       }
