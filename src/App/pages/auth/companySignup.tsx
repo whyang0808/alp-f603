@@ -54,7 +54,7 @@ const CompanySignup: React.FC = (props) => {
     } catch (err) {
       const responseMessage = err.response?.data?.message
       if (responseMessage === 'COMPANY_EXISTS') {
-        // Perhaps the endpoint can return different messages like "Company registration is pending approval"
+        // TODO: Perhaps this message can be split into 2 different messages like "Company registration is pending approval"
         // and "Company account exists" (if the registration has been approved)
         responseHandler('Company exists already', 'warning')
       } else if (responseMessage) {
