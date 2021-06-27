@@ -5,6 +5,7 @@ import { PublicRoute, PrivateRoute } from './route'
 import SignupPage from '../pages/auth/signup'
 import LoginPage from '../pages/auth/login'
 import ForgotPage from '../pages/auth/forgot'
+import ResetPage from '../pages/auth/reset'
 import SettingPage from '../pages/setting'
 import DashBoardPage from '../pages/dashboard'
 
@@ -24,6 +25,10 @@ const AppRouter = () => (
 
       <PublicRoute path='/forgot'>
         <ForgotPage />
+      </PublicRoute>
+
+      <PublicRoute path='/reset-password'>
+        <ResetPage />
       </PublicRoute>
 
       <PrivateRoute path='/setting'>

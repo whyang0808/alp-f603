@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useReducer } from 'react'
+import { useCallback, useEffect, useReducer } from 'react'
 
 import { ROLE } from '../constants'
 import { IAuthState } from '../context/auth-context'

@@ -2,6 +2,9 @@ import React from 'react'
 import { Form, Input, Button } from 'antd'
 import { Link } from 'react-router-dom'
 
+import axios from '../../shared/axios/axios'
+import responseHandler from '../../utils/respHandler'
+
 // import responseHandler from '../../../utils/respHandler'
 import { SubmitValues } from './interfaces'
 
@@ -18,10 +21,25 @@ const layout = {
 const Forgot: React.FC = (props) => {
   const [form] = Form.useForm()
 
-  const handleSubmit = (values: SubmitValues) => {
+  const handleSubmit = async (values: SubmitValues) => {
     console.log('Success:', values)
-    // HTTP Request to create user account & check for duplication & wait for admin approval
-    // responseHandler('Thank You! Please wait for approval', 'success')
+
+    try {
+      const result = await axios.post('/user/forgot-password', values)
+      if (result.status === 200) {
+        return responseHandler('Please check your email', 'success')
+      }
+      throw new Error()
+    } catch (err) {
+      const responseMessage = err.response?.data?.message
+      if (responseMessage === 'Details are incorrect') {
+        responseHandler('Details are incorrect', 'warning')
+      } else if (responseMessage === 'Internal server error') {
+        responseHandler(new Error(responseMessage), 'error')
+      } else {
+        responseHandler(err, 'error')
+      }
+    }
   }
 
   return (
