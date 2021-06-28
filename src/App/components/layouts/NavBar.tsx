@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { DashboardOutlined, UserOutlined, SettingOutlined, LoginOutlined } from '@ant-design/icons'
+import { DashboardOutlined, UserOutlined, SettingOutlined, LoginOutlined, ShopOutlined } from '@ant-design/icons'
 import { Link, useLocation } from 'react-router-dom'
 import { Layout, Menu } from 'antd'
 
@@ -51,6 +51,9 @@ const NavBar = React.memo<NavBarProps>((props) => {
           <SubMenu key='account' icon={<UserOutlined />} title='Account'>
             <Menu.Item key='setting' icon={<SettingOutlined />}>
               <Link to='/setting'>Setting</Link>
+            </Menu.Item>
+            <Menu.Item key='company-signup' icon={<ShopOutlined />}>
+              <Link to='/company/signup'>Company Registration</Link>
             </Menu.Item>
             <Menu.Item key='logout' icon={<LoginOutlined />} onClick={logout}>
               Logout

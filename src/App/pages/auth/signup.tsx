@@ -51,7 +51,6 @@ const Signup: React.FC = (props) => {
     try {
       const { status } = await axios.post('/user/create', modifiedValues)
       if (status === 200) {
-        // why needed message.destroy()?
         message.destroy()
         history.push('/login')
         return responseHandler('Your account has been created, please login', 'success')

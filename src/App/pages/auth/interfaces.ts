@@ -6,4 +6,10 @@ export interface SubmitValues {
     idNumber?: string;
     idType?: string;
     password?: string;
+    newPassword?: string;
+}
+
+export interface CompanySubmitValues {
+    name: string;
+    registrationId: string;
 }
