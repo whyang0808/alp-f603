@@ -1,39 +1,71 @@
 import React from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import moment from 'moment'
-import { Form, DatePicker, Input, Button, Radio } from 'antd'
-import { debounce, omit } from 'lodash'
+import { Form, DatePicker, Input, Button, Radio, message } from 'antd'
+import { debounce } from 'lodash'
 
-import responseHandler from '../../../utils/respHandler'
+import axios from '../../shared/axios/axios'
+import responseHandler from '../../utils/respHandler'
 import { SubmitValues } from './interfaces'
 
 const layout = {
   labelCol: {
-    span: 4
+    sm: {
+      span: 12
+    },
+    lg: {
+      span: 6
+    }
   },
   wrapperCol: {
-    span: 12
+    sm: {
+      span: 12
+    },
+    lg: {
+      span: 12
+    }
   }
 }
 
 const tailLayout = {
   wrapperCol: {
-    offset: 4,
-    span: 12
+    sm: {
+      span: 12
+    },
+    lg: {
+      offset: 6,
+      span: 12
+    }
   }
 }
 
 const Signup: React.FC = (props) => {
   const [form] = Form.useForm()
+  const history = useHistory()
 
-  const handleSubmit = (values: SubmitValues) => {
-    const updatedValues = {
-      ...omit(values, ['firstName', 'lastName']),
-      name: { firstName: values.firstName, lastName: values.lastName }
-
+  const handleSubmit = async (values: SubmitValues) => {
+    const modifiedValues = {
+      ...values,
+      birthDate: values.birthDate!.format('YYYY-MM-DD')
     }
-    console.log('Success:', updatedValues)
-    // HTTP Request to create user account & check for duplication & wait for admin approval
-    // responseHandler('Thank You! Please wait for approval', 'success')
+    try {
+      const { status } = await axios.post('/user/create', modifiedValues)
+      if (status === 200) {
+        message.destroy()
+        history.push('/login')
+        return responseHandler('Your account has been created, please login', 'success')
+      }
+      throw new Error()
+    } catch (err) {
+      const responseMessage = err.response?.data?.message
+      if (responseMessage === 'USER_EXISTS') {
+        responseHandler('User exists already, please login instead', 'warning')
+      } else if (responseMessage === 'Internal server error') {
+        responseHandler(new Error(responseMessage), 'error')
+      } else {
+        responseHandler(err, 'error')
+      }
+    }
   }
 
   const handleValuesChange = debounce((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -152,6 +184,28 @@ const Signup: React.FC = (props) => {
         </Form.Item>
 
         <Form.Item
+          name='confirmPassword'
+          label='Confirm Password'
+          dependencies={['password']}
+          rules={[
+            {
+              required: true,
+              message: 'Please confirm your password!'
+            },
+            ({ getFieldValue }) => ({
+              validator (_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve()
+                }
+                return Promise.reject(new Error('The two passwords that you entered do not match!'))
+              }
+            })
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item
           name='birthDate'
           label='Birth Date'
           rules={[
@@ -169,6 +223,10 @@ const Signup: React.FC = (props) => {
           <Button type='primary' htmlType='submit'>
             Submit
           </Button>
+
+          <div style={{ paddingTop: '2%' }}>
+            Already have an account? <Link to='/login'>Return to login</Link>
+          </div>
         </Form.Item>
 
       </Form>

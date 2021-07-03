@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { DashboardOutlined, UserOutlined, SettingOutlined, LoginOutlined } from '@ant-design/icons'
+import React, { useState, useEffect, useContext } from 'react'
+import { DashboardOutlined, UserOutlined, SettingOutlined, LoginOutlined, ShopOutlined } from '@ant-design/icons'
 import { Link, useLocation } from 'react-router-dom'
 import { Layout, Menu } from 'antd'
 
+import { AuthContext } from '../../shared/context/auth-context'
 import logo from './logo.svg'
 
 const { Header, Content } = Layout
@@ -14,6 +15,7 @@ export interface NavBarProps {
 }
 
 const NavBar = React.memo<NavBarProps>((props) => {
+  const { logout } = useContext(AuthContext)
   const { pathname } = useLocation()
   const [selectedKey, setSelectedKey] = useState('home')
 
@@ -23,10 +25,6 @@ const NavBar = React.memo<NavBarProps>((props) => {
 
     setSelectedKey(key)
   }, [pathname])
-
-  const handleLogout = useCallback(() => {
-
-  }, [])
 
   return (
     <>
@@ -42,7 +40,6 @@ const NavBar = React.memo<NavBarProps>((props) => {
                 float: 'left',
                 width: '50px',
                 height: '35px'
-
               }}
             />
           </Link>
@@ -55,13 +52,13 @@ const NavBar = React.memo<NavBarProps>((props) => {
             <Menu.Item key='setting' icon={<SettingOutlined />}>
               <Link to='/setting'>Setting</Link>
             </Menu.Item>
-            <Menu.Item key='logout' icon={<LoginOutlined />} onClick={() => handleLogout}>
+            <Menu.Item key='logout' icon={<LoginOutlined />} onClick={logout}>
               Logout
             </Menu.Item>
           </SubMenu>
         </Menu>
       </Header>
-      <Content style={{ padding: '2% 2%' }}>
+      <Content>
         {props.children}
       </Content>
     </>

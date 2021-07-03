@@ -2,6 +2,9 @@ import React from 'react'
 import { Form, Input, Button } from 'antd'
 import { Link } from 'react-router-dom'
 
+import axios from '../../shared/axios/axios'
+import responseHandler from '../../utils/respHandler'
+
 // import responseHandler from '../../../utils/respHandler'
 import { SubmitValues } from './interfaces'
 
@@ -15,13 +18,28 @@ const layout = {
   }
 }
 
-const Login: React.FC = (props) => {
+const Forgot: React.FC = (props) => {
   const [form] = Form.useForm()
 
-  const handleSubmit = (values: SubmitValues) => {
+  const handleSubmit = async (values: SubmitValues) => {
     console.log('Success:', values)
-    // HTTP Request to create user account & check for duplication & wait for admin approval
-    // responseHandler('Thank You! Please wait for approval', 'success')
+
+    try {
+      const result = await axios.post('/user/forgot-password', values)
+      if (result.status === 200) {
+        return responseHandler('Please check your email', 'success')
+      }
+      throw new Error()
+    } catch (err) {
+      const responseMessage = err.response?.data?.message
+      if (responseMessage === 'Details are incorrect') {
+        responseHandler('Details are incorrect', 'warning')
+      } else if (responseMessage === 'Internal server error') {
+        responseHandler(new Error(responseMessage), 'error')
+      } else {
+        responseHandler(err, 'error')
+      }
+    }
   }
 
   return (
@@ -29,11 +47,16 @@ const Login: React.FC = (props) => {
       <Form
         form={form}
         style={{ width: '100%' }}
-        name='login-form'
+        name='forgot-password-form'
         onFinish={handleSubmit}
       >
         <Form.Item {...layout}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>LOG IN</div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            FORGOT PASSWORD?
+          </div>
+          {/* <div style={{ paddingTop: '3%' }}>
+            We'll send the recovery link to
+          </div> */}
         </Form.Item>
 
         <Form.Item
@@ -53,39 +76,16 @@ const Login: React.FC = (props) => {
           <Input placeholder='E-mail' />
         </Form.Item>
 
-        <Form.Item
-          name='password'
-          {...layout}
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!'
-            }
-          ]}
-        >
-          <Input.Password placeholder='Password' />
-        </Form.Item>
-
         <Form.Item {...layout}>
           <Button type='primary' htmlType='submit' style={{ width: '100%' }}>
-            Submit
+            Send Recovery Link
           </Button>
-
-          <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '2%' }}>
-            <Link to='/forgot'>Forgot Password</Link>
-            <div style={{ margin: '0 2%' }}>|</div>
-            <Link to='/signup'>Sign up for an account</Link>
-          </div>
         </Form.Item>
 
         <Form.Item {...layout}>
           <hr style={{ color: 'grey' }} />
           <div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: '2%' }}>
-            <Link to='/'>Privacy Policy</Link>
-            <div>|</div>
-            <Link to='/signup'>Terms of Conditions</Link>
-            <div>|</div>
-            <div>Alp-f603 ©2021</div>
+            <Link to='/login'>Return to login</Link>
           </div>
         </Form.Item>
 
@@ -94,4 +94,4 @@ const Login: React.FC = (props) => {
   )
 }
 
-export default Login
+export default Forgot
