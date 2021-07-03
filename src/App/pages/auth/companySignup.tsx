@@ -103,9 +103,6 @@ const CompanySignup: React.FC = (props) => {
           <Button type='primary' htmlType='submit'>
             Submit
           </Button>
-          <Button type='link' onClick={() => history.push('/')}>
-            Return to dashboard
-          </Button>
         </Form.Item>
       </Form>
     </div>

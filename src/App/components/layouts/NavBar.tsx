@@ -52,9 +52,6 @@ const NavBar = React.memo<NavBarProps>((props) => {
             <Menu.Item key='setting' icon={<SettingOutlined />}>
               <Link to='/setting'>Setting</Link>
             </Menu.Item>
-            <Menu.Item key='company-signup' icon={<ShopOutlined />}>
-              <Link to='/company/signup'>Company Registration</Link>
-            </Menu.Item>
             <Menu.Item key='logout' icon={<LoginOutlined />} onClick={logout}>
               Logout
             </Menu.Item>
