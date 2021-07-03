@@ -1,4 +1,5 @@
 import React, { useEffect, useContext } from 'react'
+import { Button } from 'antd'
 
 import { AuthContext } from '../../shared/context/auth-context'
 import NavBar from '../../components/layouts/NavBar'
@@ -28,6 +29,11 @@ const DashBoard: React.FC = (props) => {
 
   return (
     <NavBar>
+      <div style={{ margin: 24 }}>
+        <Button type='primary' onClick={() => {}}>
+          File Creation
+        </Button>
+      </div>
       <CheckList />
     </NavBar>
   )
