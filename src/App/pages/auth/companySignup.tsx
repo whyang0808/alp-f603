@@ -41,11 +41,14 @@ const tailLayout = {
 const CompanySignup: React.FC = (props) => {
   const [form] = Form.useForm()
   const history = useHistory()
-  const { userId } = useContext(AuthContext)
+  const { userId, token } = useContext(AuthContext)
 
   const handleSubmit = async (values: CompanySubmitValues) => {
     try {
-      const { status } = await axios.post('/company/create', { ...values, userId })
+      const { status } = await axios.post('/company/create',
+        { ...values, userId },
+        { headers: { authorization: token } }
+      )
       if (status === 200) {
         history.push('/')
         return responseHandler('We\'ve sent request to our admin. You\'ll be notified through your email once the request is approved.', 'success', 5)
