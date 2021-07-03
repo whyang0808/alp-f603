@@ -3,12 +3,9 @@ import React, { useEffect, useContext } from 'react'
 import { AuthContext } from '../../shared/context/auth-context'
 import NavBar from '../../components/layouts/NavBar'
 import axios from '../../shared/axios/axios'
+import CheckList from './CheckList'
 
-interface DashBoardProps {
-    text?: string;
-}
-
-const DashBoard: React.FC<DashBoardProps> = (props) => {
+const DashBoard: React.FC = (props) => {
   const context = useContext(AuthContext)
 
   useEffect(() => {
@@ -31,7 +28,7 @@ const DashBoard: React.FC<DashBoardProps> = (props) => {
 
   return (
     <NavBar>
-      {props.text || 'Home Page'}
+      <CheckList />
     </NavBar>
   )
 }

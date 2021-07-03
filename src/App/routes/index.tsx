@@ -41,7 +41,7 @@ const AppRouter = () => (
       </PrivateRoute>
 
       <PrivateRoute path='/'>
-        <DashBoardPage text='Dashboard' />
+        <DashBoardPage />
       </PrivateRoute>
 
     </Switch>
