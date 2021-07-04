@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 
 import { AuthContext } from '../../shared/context/auth-context'
-import NavBar from '../../components/layouts/NavBar'
 import SideBar from '../../components/layouts/SideBar'
 import axios from '../../shared/axios/axios'
 
@@ -30,12 +29,8 @@ const Setting: React.FC<SettingProps> = (props) => {
   //   })()
   // }, [context.token])
 
-  return (
-    <NavBar>
-      {/* SideBar will dynamically decide on which content component to render */}
-      <SideBar />
-    </NavBar>
-  )
+  // SideBar will dynamically decide on which content component to render
+  return <SideBar />
 }
 
 export default Setting

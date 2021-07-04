@@ -35,80 +35,78 @@ const CheckList: React.FC = (props) => {
   ]
 
   return (
-    <div style={{ margin: '0px 24px' }}>
-      <Tabs defaultActiveKey='1' type='card'>
-        <TabPane tab='Card Tab 1' key='1'>
-          <Collapse accordion>
-            <Panel header='This is panel header 1' key='1'>
-              <Table dataSource={data}>
-                <ColumnGroup title='Name'>
-                  <Column title='First Name' dataIndex='firstName' key='firstName' />
-                  <Column title='Last Name' dataIndex='lastName' key='lastName' />
-                </ColumnGroup>
-                <Column title='Age' dataIndex='age' key='age' />
-                <Column title='Address' dataIndex='address' key='address' />
-                <Column
-                  title='Tags'
-                  dataIndex='tags'
-                  key='tags'
-                  render={tags => (
-                    <>
-                      {tags.map((tag: any) => (
-                        <Tag color='blue' key={tag}>
-                          {tag}
-                        </Tag>
-                      ))}
-                    </>
-                  )}
-                />
-                <Column
-                  title='Action'
-                  key='action'
-                  render={(text, record: any) => (
-                    <Space size='middle'>
-                      <a>Invite {record.lastName}</a>
-                      <a>Delete</a>
-                    </Space>
-                  )}
-                />
-              </Table>
-            </Panel>
-            <Panel header='This is panel header 2' key='2'>
-              <p>{text}</p>
-            </Panel>
-            <Panel header='This is panel header 3' key='3'>
-              <p>{text}</p>
-            </Panel>
-          </Collapse>
-        </TabPane>
-        <TabPane tab='Card Tab 2' key='2'>
-          <Collapse accordion>
-            <Panel header='This is panel header 4' key='1'>
-              <p>{text}</p>
-            </Panel>
-            <Panel header='This is panel header 5' key='2'>
-              <p>{text}</p>
-            </Panel>
-            <Panel header='This is panel header 6' key='3'>
-              <p>{text}</p>
-            </Panel>
-          </Collapse>
-        </TabPane>
-        <TabPane tab='Card Tab 3' key='3'>
-          <Collapse accordion>
-            <Panel header='This is panel header 7' key='1'>
-              <p>{text}</p>
-            </Panel>
-            <Panel header='This is panel header 8' key='2'>
-              <p>{text}</p>
-            </Panel>
-            <Panel header='This is panel header 9' key='3'>
-              <p>{text}</p>
-            </Panel>
-          </Collapse>
-        </TabPane>
-      </Tabs>
-    </div>
+    <Tabs defaultActiveKey='1' type='card'>
+      <TabPane tab='Card Tab 1' key='1'>
+        <Collapse accordion>
+          <Panel header='This is panel header 1' key='1'>
+            <Table dataSource={data}>
+              <ColumnGroup title='Name'>
+                <Column title='First Name' dataIndex='firstName' key='firstName' />
+                <Column title='Last Name' dataIndex='lastName' key='lastName' />
+              </ColumnGroup>
+              <Column title='Age' dataIndex='age' key='age' />
+              <Column title='Address' dataIndex='address' key='address' />
+              <Column
+                title='Tags'
+                dataIndex='tags'
+                key='tags'
+                render={tags => (
+                  <>
+                    {tags.map((tag: any) => (
+                      <Tag color='blue' key={tag}>
+                        {tag}
+                      </Tag>
+                    ))}
+                  </>
+                )}
+              />
+              <Column
+                title='Action'
+                key='action'
+                render={(text, record: any) => (
+                  <Space size='middle'>
+                    <a>Invite {record.lastName}</a>
+                    <a>Delete</a>
+                  </Space>
+                )}
+              />
+            </Table>
+          </Panel>
+          <Panel header='This is panel header 2' key='2'>
+            <p>{text}</p>
+          </Panel>
+          <Panel header='This is panel header 3' key='3'>
+            <p>{text}</p>
+          </Panel>
+        </Collapse>
+      </TabPane>
+      <TabPane tab='Card Tab 2' key='2'>
+        <Collapse accordion>
+          <Panel header='This is panel header 4' key='1'>
+            <p>{text}</p>
+          </Panel>
+          <Panel header='This is panel header 5' key='2'>
+            <p>{text}</p>
+          </Panel>
+          <Panel header='This is panel header 6' key='3'>
+            <p>{text}</p>
+          </Panel>
+        </Collapse>
+      </TabPane>
+      <TabPane tab='Card Tab 3' key='3'>
+        <Collapse accordion>
+          <Panel header='This is panel header 7' key='1'>
+            <p>{text}</p>
+          </Panel>
+          <Panel header='This is panel header 8' key='2'>
+            <p>{text}</p>
+          </Panel>
+          <Panel header='This is panel header 9' key='3'>
+            <p>{text}</p>
+          </Panel>
+        </Collapse>
+      </TabPane>
+    </Tabs>
   )
 }
 

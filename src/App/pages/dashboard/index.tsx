@@ -1,10 +1,11 @@
 import React, { useEffect, useContext } from 'react'
-import { Button } from 'antd'
+import { Button, Layout } from 'antd'
 
 import { AuthContext } from '../../shared/context/auth-context'
-import NavBar from '../../components/layouts/NavBar'
 import axios from '../../shared/axios/axios'
 import CheckList from './CheckList'
+
+const { Content } = Layout
 
 const DashBoard: React.FC = (props) => {
   const context = useContext(AuthContext)
@@ -28,14 +29,14 @@ const DashBoard: React.FC = (props) => {
   }, [context.token])
 
   return (
-    <NavBar>
-      <div style={{ margin: 24 }}>
+    <Content style={{ padding: 24 }}>
+      <div style={{ marginBottom: 24 }}>
         <Button type='primary' onClick={() => {}}>
           File Creation
         </Button>
       </div>
       <CheckList />
-    </NavBar>
+    </Content>
   )
 }
 

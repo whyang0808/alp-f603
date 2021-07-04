@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { DashboardOutlined, UserOutlined, SettingOutlined, LoginOutlined, ShopOutlined } from '@ant-design/icons'
+import { DashboardOutlined, UserOutlined, SettingOutlined, LoginOutlined } from '@ant-design/icons'
 import { Link, useLocation } from 'react-router-dom'
 import { Layout, Menu } from 'antd'
 
 import { AuthContext } from '../../shared/context/auth-context'
 import logo from './logo.svg'
 
-const { Header, Content } = Layout
+const { Header } = Layout
 
 const { SubMenu } = Menu
 
@@ -27,41 +27,36 @@ const NavBar = React.memo<NavBarProps>((props) => {
   }, [pathname])
 
   return (
-    <>
-      <Header style={{ display: 'flex', justifyContent: 'space-between', padding: '0 25px' }}>
-        <div
-          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-        >
-          <Link to='/'>
-            <img
-              src={logo}
-              alt='logo'
-              style={{
-                float: 'left',
-                width: '50px',
-                height: '35px'
-              }}
-            />
-          </Link>
-        </div>
-        <Menu theme='dark' selectedKeys={[selectedKey]} mode='horizontal' style={{ display: 'flex' }}>
-          <Menu.Item key='home' icon={<DashboardOutlined />}>
-            <Link to='/'>Home</Link>
+    <Header style={{ display: 'flex', justifyContent: 'space-between', padding: '0 25px' }}>
+      <div
+        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Link to='/'>
+          <img
+            src={logo}
+            alt='logo'
+            style={{
+              float: 'left',
+              width: '50px',
+              height: '35px'
+            }}
+          />
+        </Link>
+      </div>
+      <Menu theme='dark' selectedKeys={[selectedKey]} mode='horizontal' style={{ display: 'flex' }}>
+        <Menu.Item key='home' icon={<DashboardOutlined />}>
+          <Link to='/'>Home</Link>
+        </Menu.Item>
+        <SubMenu key='account' icon={<UserOutlined />} title='Account'>
+          <Menu.Item key='setting' icon={<SettingOutlined />}>
+            <Link to='/setting'>Setting</Link>
           </Menu.Item>
-          <SubMenu key='account' icon={<UserOutlined />} title='Account'>
-            <Menu.Item key='setting' icon={<SettingOutlined />}>
-              <Link to='/setting'>Setting</Link>
-            </Menu.Item>
-            <Menu.Item key='logout' icon={<LoginOutlined />} onClick={logout}>
-              Logout
-            </Menu.Item>
-          </SubMenu>
-        </Menu>
-      </Header>
-      <Content>
-        {props.children}
-      </Content>
-    </>
+          <Menu.Item key='logout' icon={<LoginOutlined />} onClick={logout}>
+            Logout
+          </Menu.Item>
+        </SubMenu>
+      </Menu>
+    </Header>
   )
 })
 
