@@ -8,7 +8,7 @@ import { Spin } from 'antd'
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const { login, logout, token, userId, userRole, resetToken } = useAuth()
+  const { login, logout, token, userId, userRoles, resetToken } = useAuth()
 
   useEffect(() => {
     if (token) {
@@ -30,7 +30,7 @@ const App: React.FC = () => {
     <AuthContext.Provider
       value={{
         isLoggedIn: !!token,
-        role: userRole,
+        roles: userRoles,
         token,
         userId,
         login,

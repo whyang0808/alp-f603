@@ -1,20 +1,19 @@
 import { createContext } from 'react'
-import { ROLE } from '../constants'
 
 export interface IAuthState {
   token: string | undefined;
   tokenExpirationDate: Date | undefined;
   userId: string | undefined;
-  userRole: ROLE;
+  userRoles: any;
 }
 
 type AuthContextType = {
   isLoggedIn: boolean;
   userId: string | undefined;
   token: string | undefined;
-  role: ROLE;
+  roles: any;
   login: (uid: string,
-    role: ROLE,
+    roles: any,
     token: string,
     expirationDate?: Date) => void;
   resetToken: (token: string,
@@ -26,7 +25,7 @@ export const AuthContext = createContext<AuthContextType>({
   isLoggedIn: false,
   userId: undefined,
   token: undefined,
-  role: ROLE.UNKNOWN,
+  roles: undefined,
   login: () => {},
   resetToken: () => {},
   logout: () => {}
