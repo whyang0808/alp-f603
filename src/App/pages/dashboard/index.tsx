@@ -3,7 +3,7 @@ import { Button, Layout } from 'antd'
 
 import { AuthContext } from '../../shared/context/auth-context'
 import axios from '../../shared/axios/axios'
-import CheckList from './CheckList'
+import CheckList from './checkList'
 
 const { Content } = Layout
 
