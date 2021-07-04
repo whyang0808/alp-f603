@@ -1,4 +1,5 @@
 import React, { useEffect, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
 import { Button, Layout } from 'antd'
 
 import { AuthContext } from '../../shared/context/auth-context'
@@ -9,6 +10,7 @@ const { Content } = Layout
 
 const DashBoard: React.FC = (props) => {
   const context = useContext(AuthContext)
+  const history = useHistory()
 
   useEffect(() => {
     (async () => {
@@ -31,8 +33,8 @@ const DashBoard: React.FC = (props) => {
   return (
     <Content style={{ padding: 24 }}>
       <div style={{ marginBottom: 24 }}>
-        <Button type='primary' onClick={() => {}}>
-          File Creation
+        <Button type='primary' onClick={() => history.push('/case/create')}>
+          Create New Case
         </Button>
       </div>
       <CheckList />

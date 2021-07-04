@@ -6,6 +6,8 @@ import SignupPage from '../pages/auth/signup'
 import LoginPage from '../pages/auth/login'
 import ForgotPage from '../pages/auth/forgot'
 import ResetPage from '../pages/auth/reset'
+import CaseCreation from '../pages/case-creation'
+import TransferPropertyOwnershipForm from '../pages/case-creation/transfer-property-ownership'
 import SettingPage from '../pages/setting'
 import DashBoardPage from '../pages/dashboard'
 
@@ -33,6 +35,14 @@ const AppRouter = () => (
 
       <PrivateRoute path='/setting'>
         <SettingPage text='Setting' />
+      </PrivateRoute>
+
+      <PrivateRoute path='/case/create/transferPropertyOwnership'>
+        <TransferPropertyOwnershipForm />
+      </PrivateRoute>
+
+      <PrivateRoute path='/case/create'>
+        <CaseCreation />
       </PrivateRoute>
 
       <PrivateRoute path='/'>
