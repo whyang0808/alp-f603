@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useReducer } from 'react'
 
-import { ROLE } from '../constants'
 import { IAuthState } from '../context/auth-context'
 
 const USER_DATA = 'userData'
@@ -10,7 +9,7 @@ const authInitialState: IAuthState = {
   token: undefined,
   tokenExpirationDate: undefined,
   userId: undefined,
-  userRole: ROLE.UNKNOWN
+  userRoles: undefined
 }
 
 const authReducer = (state: IAuthState, action: any) => {
@@ -20,7 +19,7 @@ const authReducer = (state: IAuthState, action: any) => {
         token: action.payload.token,
         tokenExpirationDate: action.payload.tokenExpirationDate,
         userId: action.payload.userId,
-        userRole: action.payload.userRole
+        userRoles: action.payload.userRoles
       }
     case 'resetToken':
       return {
@@ -40,7 +39,7 @@ const authReducer = (state: IAuthState, action: any) => {
 export const useAuth = () => {
   const [state, dispatch] = useReducer(authReducer, authInitialState)
 
-  const login = useCallback<(uid: string, role: ROLE, token: string, expirationDate?: Date) => void>((uid, role, token, expirationDate) => {
+  const login = useCallback<(uid: string, roles: any, token: string, expirationDate?: Date) => void>((uid, roles, token, expirationDate) => {
     const tokenExpirationDate = expirationDate || new Date(new Date().getTime() + 3600000) // Set 1 hour expiration if expiration date is not given
     const accessToken = `Bearer ${token}`
 
@@ -50,7 +49,7 @@ export const useAuth = () => {
         token: accessToken,
         tokenExpirationDate: tokenExpirationDate,
         userId: uid,
-        userRole: role
+        userRoles: roles
       }
     })
 
@@ -59,7 +58,7 @@ export const useAuth = () => {
         token: accessToken,
         tokenExpirationDate: tokenExpirationDate.toISOString(),
         userId: uid,
-        userRole: role
+        userRoles: roles
       }))
   }, [])
 
@@ -89,18 +88,18 @@ export const useAuth = () => {
         token: accessToken,
         tokenExpirationDate: tokenExpirationDate.toISOString(),
         userId: state.userId,
-        userRole: state.userRole
+        userRoles: state.userRoles
       }))
-  }, [state.userId, state.userRole])
+  }, [state.userId, state.userRoles])
 
   useEffect(() => {
     const storedUserData = localStorage.getItem(USER_DATA)
 
     if (storedUserData) {
-      const { userId, userRole, token, tokenExpirationDate } = JSON.parse(storedUserData)
+      const { userId, userRoles, token, tokenExpirationDate } = JSON.parse(storedUserData)
       if (new Date(tokenExpirationDate) > new Date()) {
         const accessToken = token.split(' ')[1]
-        login(userId, userRole, accessToken, new Date(tokenExpirationDate))
+        login(userId, userRoles, accessToken, new Date(tokenExpirationDate))
       }
     }
   }, [login])
@@ -119,6 +118,6 @@ export const useAuth = () => {
     resetToken,
     token: state.token,
     userId: state.userId,
-    userRole: state.userRole
+    userRoles: state.userRoles
   }
 }

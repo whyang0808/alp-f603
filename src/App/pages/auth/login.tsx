@@ -3,7 +3,6 @@ import { Form, Input, Button, message } from 'antd'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 
 import axios from '../../shared/axios/axios'
-import { ROLE } from '../../shared/constants'
 import { AuthContext } from '../../shared/context/auth-context'
 import responseHandler from '../../utils/respHandler'
 import { SubmitValues } from './interfaces'
@@ -32,9 +31,9 @@ const Login: React.FC = (props) => {
 
   const handleSubmit = async (values: SubmitValues) => {
     try {
-      const { data: { userId, token } = {} } = await axios.post('/user/login', values)
+      const { data: { userId, token, roles } = {} } = await axios.post('/user/login', values)
       if (token) {
-        login(userId, ROLE.UNKNOWN, token)
+        login(userId, roles, token)
 
         let pathname = '/'
         if (location.state?.from?.pathname) {

@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { DashboardOutlined, UserOutlined, SettingOutlined, LoginOutlined, ShopOutlined } from '@ant-design/icons'
+import React, { useState, useEffect, useContext, useMemo } from 'react'
+import { DashboardOutlined, UserOutlined, SettingOutlined, LoginOutlined } from '@ant-design/icons'
 import { Link, useLocation } from 'react-router-dom'
-import { Layout, Menu } from 'antd'
+import { Layout, Menu, Select } from 'antd'
 
 import { AuthContext } from '../../shared/context/auth-context'
 import logo from './logo.svg'
 
 const { Header, Content } = Layout
+const { Option } = Select
 
 const { SubMenu } = Menu
 
@@ -15,7 +16,7 @@ export interface NavBarProps {
 }
 
 const NavBar = React.memo<NavBarProps>((props) => {
-  const { logout } = useContext(AuthContext)
+  const { roles, logout } = useContext(AuthContext)
   const { pathname } = useLocation()
   const [selectedKey, setSelectedKey] = useState('home')
 
@@ -25,6 +26,12 @@ const NavBar = React.memo<NavBarProps>((props) => {
 
     setSelectedKey(key)
   }, [pathname])
+
+  const companies = useMemo(() => {
+    return roles.map((r: {company: {_id: string, name: string}}) => {
+      return { id: r.company._id, name: r.company.name }
+    })
+  }, [roles])
 
   return (
     <>
@@ -44,19 +51,28 @@ const NavBar = React.memo<NavBarProps>((props) => {
             />
           </Link>
         </div>
-        <Menu theme='dark' selectedKeys={[selectedKey]} mode='horizontal' style={{ display: 'flex' }}>
-          <Menu.Item key='home' icon={<DashboardOutlined />}>
-            <Link to='/'>Home</Link>
-          </Menu.Item>
-          <SubMenu key='account' icon={<UserOutlined />} title='Account'>
-            <Menu.Item key='setting' icon={<SettingOutlined />}>
-              <Link to='/setting'>Setting</Link>
+        <span style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Select style={{ width: 200, display: 'flex', alignItems: 'center', marginRight: '5%' }}>
+            {
+              companies.map((c: any) => (
+                <Option key={c.id} value={c.name}>{c.name}</Option>
+              ))
+            }
+          </Select>
+          <Menu theme='dark' selectedKeys={[selectedKey]} mode='horizontal' style={{ display: 'flex' }}>
+            <Menu.Item key='home' icon={<DashboardOutlined />}>
+              <Link to='/'>Home</Link>
             </Menu.Item>
-            <Menu.Item key='logout' icon={<LoginOutlined />} onClick={logout}>
-              Logout
-            </Menu.Item>
-          </SubMenu>
-        </Menu>
+            <SubMenu key='account' icon={<UserOutlined />} title='Account'>
+              <Menu.Item key='setting' icon={<SettingOutlined />}>
+                <Link to='/setting'>Setting</Link>
+              </Menu.Item>
+              <Menu.Item key='logout' icon={<LoginOutlined />} onClick={logout}>
+                Logout
+              </Menu.Item>
+            </SubMenu>
+          </Menu>
+        </span>
       </Header>
       <Content>
         {props.children}
